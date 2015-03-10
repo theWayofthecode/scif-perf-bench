@@ -1,0 +1,2 @@
+Change to CMAKE building system.
+Consider to move connect/accept in the classes.
