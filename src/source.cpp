@@ -20,8 +20,8 @@
 #include <cerrno>
 #include <unistd.h>
 
-#include "common.h"
-#include "Sender.h"
+#include "constants.h"
+#include "SenderInterface.h"
 #include "MSGSender.h"
 
 /**
@@ -59,7 +59,7 @@ int main (int argc, char *argv [])
     int msg_len;
 	scif_epd_t epd;
 	struct scif_portID portID;
-	Sender *sender = 0;
+	SenderInterface *sender = 0;
 	int nbytes;
 
 	/* Parameters */

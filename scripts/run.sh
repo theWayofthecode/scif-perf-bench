@@ -1,5 +1,5 @@
 
-
+base=../build
 #size=$((2**24))
 size=133
 msg_len=0
@@ -14,10 +14,10 @@ do
 msg_len=$(($msg_len + 128))
 
 ########## HOST (receiver) ##############
-build/sink ${size} ${msg_len} & #>> ${outfile} &
+${base}/sink ${size} ${msg_len} & #>> ${outfile} &
 
 ########## MIC (sender) #############
-micnativeloadex build/source -a "${size} ${msg_len}"
+micnativeloadex ${base}/source -a "${size} ${msg_len}"
 
 usleep 10000
 done

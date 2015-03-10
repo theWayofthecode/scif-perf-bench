@@ -22,8 +22,8 @@
 #include <ratio>
 #include <chrono>
 
-#include "common.h"
-#include "Receiver.h"
+#include "constants.h"
+#include "ReceiverInterface.h"
 #include "MSGReceiver.h"
 
 int accept_connection (scif_epd_t *epd)
@@ -62,7 +62,7 @@ int main (int argc, char *argv [])
     size_t sz;
     int msg_len;
 	scif_epd_t epd;
-	Receiver *receiver = 0;
+	ReceiverInterface *receiver = 0;
 	int nbytes;
 	std::chrono::high_resolution_clock::time_point start, end;
 
@@ -90,7 +90,7 @@ int main (int argc, char *argv [])
 	if (nbytes < (int)sz) {
 		std::cerr << "WARNING: recv: " << nbytes << " < " << sz << std::endl;
 	}
-	if (!receiver->data_content_correct ()) {
+	if (!receiver->data_ok ()) {
 		std::cerr << "WARNING: Receiver: Payload data content is not correct." << std::endl;
 	}
 	

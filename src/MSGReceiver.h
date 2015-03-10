@@ -18,9 +18,10 @@
 
 #include <scif.h>
 #include <cstdint>
-#include "Receiver.h"
+#include "ReceiverInterface.h"
+#include "Peer.h"
 
-class MSGReceiver : public Receiver
+class MSGReceiver : public ReceiverInterface, public Peer
 {
 	int msg_len;
 	
@@ -28,6 +29,7 @@ public:
 	MSGReceiver (scif_epd_t epd, std::size_t buf_sz, int msg_len);
 	int recv_payload ();	
 	~MSGReceiver ();
+	bool data_ok () { return Peer::data_ok (); }
 };
 
 #endif

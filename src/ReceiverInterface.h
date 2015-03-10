@@ -17,28 +17,12 @@
 #ifndef _RECEIVERINTERFACE_H_
 #define _RECEIVERINTERFACE_H_
 
-#include <scif.h>
-#include <cstdint>
-#include <cstring>
-#include "common.h"
-
-class Receiver
+class ReceiverInterface
 {
-protected:
-	const scif_epd_t epd;
-	const std::size_t buf_sz;
-	std::uint8_t *buf;
-	
 public:
-	Receiver (const scif_epd_t epd, const std::size_t buf_sz) : epd (epd), buf_sz (buf_sz) {}
-	virtual ~Receiver () {}
+	virtual ~ReceiverInterface () {}
 	virtual int recv_payload () = 0;
-	
-	virtual bool data_content_correct ()
-	{	
-		return (std::memcmp (buf, buf + buf_sz/2, buf_sz/2) == 0) &&
-				(buf[0] == buf[buf_sz - 1]);
-	}
+	virtual bool data_ok () = 0;
 };
 
 #endif

@@ -14,24 +14,13 @@
 
 */
 
-#ifndef _SENDERINTERFACE_H_
-#define _SENDERINTERFACE_H_
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
-#include <scif.h>
 #include <cstdint>
-#include "common.h"
 
-class Sender
-{
-protected:
-	const scif_epd_t epd;
-	const std::size_t buf_sz;
-	std::uint8_t *buf;
-public:
-	Sender (const scif_epd_t epd, const std::size_t buf_sz) 
-		: epd (epd), buf_sz (buf_sz) {}
-	virtual ~Sender () {}
-	virtual int send_payload () = 0;
-};
+#define PORT 8888
+
+const std::uint8_t content = 0xab;
 
 #endif

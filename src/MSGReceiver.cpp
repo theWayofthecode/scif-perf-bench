@@ -21,7 +21,7 @@
 #include "MSGReceiver.h"
 
 MSGReceiver::MSGReceiver (scif_epd_t epd, std::size_t buf_sz, int msg_len) : 
-	Receiver (epd, buf_sz), msg_len (msg_len) 
+	Peer (epd, buf_sz), msg_len (msg_len) 
 {
 	buf = new std::uint8_t[buf_sz];
 }

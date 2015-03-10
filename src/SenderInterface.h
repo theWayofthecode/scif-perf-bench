@@ -14,11 +14,14 @@
 
 */
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef _SENDERINTERFACE_H_
+#define _SENDERINTERFACE_H_
 
-#define PORT 8888
-
-const char content = 0xab;
+class SenderInterface
+{
+public:
+	virtual int send_payload () = 0;
+	virtual ~SenderInterface () {}
+};
 
 #endif

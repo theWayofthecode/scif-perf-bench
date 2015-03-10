@@ -19,9 +19,10 @@
 
 #include <scif.h>
 #include <cstdint>
-#include "Sender.h"
+#include "SenderInterface.h"
+#include "Peer.h"
 
-class MSGSender : public Sender
+class MSGSender : public SenderInterface, public Peer
 {
 	int msg_len;
 	

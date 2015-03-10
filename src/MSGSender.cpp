@@ -19,10 +19,10 @@
 #include <cstring>
 #include <cerrno>
 #include "MSGSender.h"
-#include "common.h"
+#include "constants.h"
 
 MSGSender::MSGSender (scif_epd_t epd, std::size_t buf_sz, int msg_len) : 
-	Sender (epd, buf_sz), msg_len (msg_len) 
+	Peer (epd, buf_sz), msg_len (msg_len) 
 {
 	buf = new std::uint8_t[buf_sz];
     std::memset (buf, content, buf_sz);
