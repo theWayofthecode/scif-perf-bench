@@ -24,7 +24,8 @@
 
 #include "constants.h"
 #include "ReceiverInterface.h"
-#include "MSGReceiver.h"
+#include "primitives/MSGReceiver.h"
+#include "primitives/RMAReceiver.h"
 
 int accept_connection (scif_epd_t *epd)
 {
@@ -81,7 +82,7 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	receiver = new MSGReceiver (epd, sz, msg_len);
+	receiver = new RMAReceiver (epd, sz);
 	
 	start = std::chrono::high_resolution_clock::now ();
 	nbytes = receiver->recv_payload ();

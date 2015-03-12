@@ -1,6 +1,6 @@
 #/usr/bin/bash
 
-csvs=`find  ../data/csv -name *bw*.csv`
+csvs=`find  ../data/csv -name bw_expo*.csv`
 
 for f in $csvs
 do

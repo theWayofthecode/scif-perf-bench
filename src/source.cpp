@@ -22,7 +22,9 @@
 
 #include "constants.h"
 #include "SenderInterface.h"
-#include "MSGSender.h"
+#include "primitives/MSGSender.h"
+#include "primitives/VwritetoSender.h"
+#include "primitives/WritetoSender.h"
 
 /**
  *	It is assumed that the Sink is ready to accept.
@@ -79,7 +81,7 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	sender = new MSGSender (epd, sz, msg_len);
+	sender = new VwritetoSender (epd, sz, msg_len);
 	
 	nbytes = sender->send_payload ();
 	if (nbytes < (int)sz) {

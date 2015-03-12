@@ -13,13 +13,13 @@
 	Author: Aram Santogidis <aram.santogidis@cern.ch>
 
 */
-#ifndef _MSGSENDER_H_
-#define _MSGSENDER_H_
+#ifndef _MSGRECEIVER_H_
+#define _MSGRECEIVER_H_
 
 #include <scif.h>
 #include <cstdint>
-#include "ReceiverInterface.h"
-#include "Peer.h"
+#include "../ReceiverInterface.h"
+#include "../Peer.h"
 
 class MSGReceiver : public ReceiverInterface, public Peer
 {

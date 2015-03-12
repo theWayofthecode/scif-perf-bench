@@ -1,2 +1,3 @@
-Change to CMAKE building system.
+Add version numbering
 Consider to move connect/accept in the classes.
+source, sink switching logic

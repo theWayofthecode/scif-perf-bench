@@ -14,22 +14,22 @@
 
 */
 
-#ifndef _MSGSENDER_H_
-#define _MSGSENDER_H_
+#ifndef _WRITETOSENDER_H_
+#define _WRITETOSENDER_H_
 
 #include <scif.h>
 #include <cstdint>
-#include "SenderInterface.h"
-#include "Peer.h"
+#include "../SenderInterface.h"
+#include "../RMAPeer.h"
 
-class MSGSender : public SenderInterface, public Peer
+class WritetoSender : public SenderInterface, public RMAPeer
 {
-	int msg_len;
+	int block_sz;
 	
 public:
-	MSGSender (scif_epd_t epd, std::size_t buf_sz, int msg_len);
+	WritetoSender (scif_epd_t epd, std::size_t buf_sz, int block_sz);
 	int send_payload ();	
-	~MSGSender ();
+	~WritetoSender ();
 };
 
 #endif

@@ -19,7 +19,7 @@
 #include <cstring>
 #include <cerrno>
 #include "MSGSender.h"
-#include "constants.h"
+#include "../constants.h"
 
 MSGSender::MSGSender (scif_epd_t epd, std::size_t buf_sz, int msg_len) : 
 	Peer (epd, buf_sz), msg_len (msg_len) 

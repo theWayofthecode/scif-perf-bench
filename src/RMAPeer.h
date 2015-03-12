@@ -14,35 +14,30 @@
 
 */
 
-#ifndef _PEERINTERFACE_H_
-#define _PEERINTERFACE_H_
+#ifndef _RMAPEERINTERFACE_H_
+#define _RMAPEERINTERFACE_H_
 
 #include <scif.h>
 #include <cstdint>
 #include <cstdio>
+#include "Peer.h"
 #include "constants.h"
 
-class Peer
+class RMAPeer : public Peer
 {
 protected:
-	const scif_epd_t epd;
-	const std::size_t buf_sz;
-	std::uint8_t *buf;
+	off_t loff;
+	off_t roff;
 
-	Peer (const scif_epd_t epd, const std::size_t buf_sz) 
-		: epd (epd), buf_sz (buf_sz) {}
+	RMAPeer (const scif_epd_t epd, const std::size_t buf_sz) 
+		: Peer (epd, buf_sz), loff (-1), roff (-1) {}
 
 public:
-
-	/**
-	 * We compare also the last element (buf_sz-1) to content for the case of
-	 * when buf_sz is an odd number.
-	 */
-	virtual bool data_ok ()
+	void exchange_offs ()
 	{
-		return (std::memcmp (buf, buf + buf_sz/2, buf_sz/2) == 0) &&
-			(buf[0] == buf[buf_sz-1]) && (buf[0] == content);
-	}		
+		scif_send (epd, &loff, sizeof (off_t), SCIF_SEND_BLOCK);
+		scif_recv (epd, &roff, sizeof (off_t), SCIF_RECV_BLOCK);
+	}
 };
 
 #endif
