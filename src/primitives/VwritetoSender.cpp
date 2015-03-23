@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cstring>
 #include <cerrno>
+#include <unistd.h>
 #include "VwritetoSender.h"
 #include "../constants.h"
 
@@ -37,7 +38,7 @@ int VwritetoSender::send_payload ()
 {
 	std::uint8_t *buf_ptr = buf;
 	std::uint8_t *buf_end = buf + buf_sz;
-	off_t roff_idx = roff;
+	off_t roff_idx = roff; //First cacheline reserved for scif_fence_signal
 	int err = 0, bytes;
 	int mark;
 	
@@ -53,10 +54,7 @@ int VwritetoSender::send_payload ()
 	}
 
 	/*synchronize */
-	scif_fence_mark (epd, SCIF_FENCE_INIT_SELF, &mark);
-	scif_fence_wait (epd, mark);
-	exchange_offs ();
-
+	scif_fence_signal (epd, 0, 0, roff + buf_sz, 0xff, SCIF_FENCE_INIT_SELF | SCIF_SIGNAL_REMOTE);
 	return buf_ptr - buf;
 }
 

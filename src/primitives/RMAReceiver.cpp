@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cstring>
 #include <cerrno>
+#include <unistd.h>
 #include "RMAReceiver.h"
 #include "../RMAPeer.h"
 
@@ -25,22 +26,24 @@ RMAReceiver::RMAReceiver (scif_epd_t epd, std::size_t buf_sz) :
 	RMAPeer (epd, buf_sz)
 {
 	int err;
-	err = posix_memalign((void **)&buf, 0x1000, buf_sz);
+	err = posix_memalign((void **)&buf, 0x1000, buf_sz + 0x1000);
 	if (err < 0) {
 		std::cerr << "ERROR: posix_memalign: " << std::strerror (err) << std::endl;
 	}
-	loff = scif_register (epd, (void *)buf, buf_sz, 0, SCIF_PROT_WRITE, 0);
-	if (loff < 0) {
+	loff = scif_register (epd, (void *)buf, buf_sz + 0x1000, 0, SCIF_PROT_WRITE, 0);
+	if (loff == SCIF_REGISTER_FAILED) {
 		std::cerr << "ERROR: scif_register: " << std::strerror (errno) << std::endl;
 	}
+    std::memset (buf, 0, buf_sz + 0x1000);
 	exchange_offs ();
 }
 
 int RMAReceiver::recv_payload ()
 {
-	/* Used for synchronization */
-	exchange_offs ();
-
+	/* synchronize */
+	while (*(buf + buf_sz) != 0xff) {
+		usleep (50);
+	}
 	return buf_sz;
 }
 

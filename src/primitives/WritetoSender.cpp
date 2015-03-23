@@ -55,13 +55,16 @@ int WritetoSender::send_payload ()
 		roff_idx += bytes;
 	}
 	
-	/* used to synchronize */
-	exchange_offs ();
+	/*synchronize */
+	scif_fence_signal (epd, 0, 0, roff + buf_sz, 0xff, SCIF_FENCE_INIT_SELF | SCIF_SIGNAL_REMOTE);
 
 	return loff_idx - loff;
 }
 
 WritetoSender::~WritetoSender ()
 {
+	if (scif_unregister (epd, loff, buf_sz) < 0) {
+		std::cerr << "ERROR: scif_unregister: " << std::strerror (errno) << std::endl;
+	}
 	std::free (buf);
 }

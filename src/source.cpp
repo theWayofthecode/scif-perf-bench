@@ -61,7 +61,7 @@ int main (int argc, char *argv [])
     int msg_len;
 	scif_epd_t epd;
 	struct scif_portID portID;
-	SenderInterface *sender = 0;
+	WritetoSender *sender = 0;
 	int nbytes;
 
 	/* Parameters */
@@ -81,13 +81,13 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	sender = new VwritetoSender (epd, sz, msg_len);
-	
+	sender = new WritetoSender (epd, sz, msg_len);
+	sender->exchange_offs (); //barrier
 	nbytes = sender->send_payload ();
 	if (nbytes < (int)sz) {
 		std::cerr << "WARNING: send: " << nbytes << " < " << sz << std::endl;
 	}
-	
+
 	/* Close */
 	if (sender) {
 		delete sender;

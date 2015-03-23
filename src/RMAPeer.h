@@ -18,7 +18,9 @@
 #define _RMAPEERINTERFACE_H_
 
 #include <scif.h>
+#include <iostream>
 #include <cstdint>
+#include <cerrno>
 #include <cstdio>
 #include "Peer.h"
 #include "constants.h"
@@ -33,10 +35,18 @@ protected:
 		: Peer (epd, buf_sz), loff (-1), roff (-1) {}
 
 public:
+
+	/**
+	 * Error management
+	 */
 	void exchange_offs ()
 	{
-		scif_send (epd, &loff, sizeof (off_t), SCIF_SEND_BLOCK);
-		scif_recv (epd, &roff, sizeof (off_t), SCIF_RECV_BLOCK);
+		if (scif_send (epd, &loff, sizeof (off_t), SCIF_SEND_BLOCK) == -1) {
+			std::cerr << "exchange_offs: scif_send error: " << std::strerror (errno) << std::endl;
+		}
+		if (scif_recv (epd, &roff, sizeof (off_t), SCIF_RECV_BLOCK) == -1) {
+			std::cerr << "exchange_offs: scif_recv error: " << std::strerror (errno) << std::endl;
+		}
 	}
 };
 
