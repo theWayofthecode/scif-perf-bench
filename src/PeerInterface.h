@@ -13,22 +13,15 @@
 	Author: Aram Santogidis <aram.santogidis@cern.ch>
 
 */
-#ifndef _RMARECEIVER_H_
-#define _RMARECEIVER_H_
 
-#include <scif.h>
-#include <cstdint>
-#include "../ReceiverInterface.h"
-#include "../RMAPeer.h"
+#ifndef _PEERINTERFACE_H_
+#define _PEERINTERFACE_H_
 
-class RMAReceiver : public ReceiverInterface, public RMAPeer
+class PeerInterface
 {
-
 public:
-	RMAReceiver (scif_epd_t epd, std::size_t buf_sz);
-	int recv_payload ();	
-	~RMAReceiver ();
-	bool data_ok () { return Peer::data_ok (); }
+	virtual void rendezvous () = 0;
+	virtual ~PeerInterface () {}
 };
 
 #endif

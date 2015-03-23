@@ -14,15 +14,16 @@
 
 */
 
-#ifndef _PEERINTERFACE_H_
-#define _PEERINTERFACE_H_
+#ifndef _PEER_H_
+#define _PEER_H_
 
 #include <scif.h>
 #include <cstdint>
 #include <cstdio>
 #include "constants.h"
+#include "PeerInterface.h"
 
-class Peer
+class Peer : public virtual PeerInterface
 {
 protected:
 	const scif_epd_t epd;
@@ -42,7 +43,18 @@ public:
 	{
 		return (std::memcmp (buf, buf + buf_sz/2, buf_sz/2) == 0) &&
 			(buf[0] == buf[buf_sz-1]) && (buf[0] == content);
-	}		
+	}
+	
+	void rendezvous ()
+	{
+		int token = 0xffffffff;
+		if (scif_send (epd, &token, sizeof (int), SCIF_SEND_BLOCK) == -1) {
+			std::cerr << "rendezvous: scif_send error: " << std::strerror (errno) << std::endl;
+		}
+		if (scif_recv (epd, &token, sizeof (int), SCIF_RECV_BLOCK) == -1) {
+			std::cerr << "rendezvous: scif_recv error: " << std::strerror (errno) << std::endl;
+		}
+	}	
 };
 
 #endif

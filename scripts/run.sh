@@ -1,11 +1,11 @@
 
 base=../bin
-size=$((2**30))
+size=$((2**20))
 msg_len=0
 msg_step=$((2**7))
 max_msg_len=$((2**12))
-expo=12
-max_expo=30
+expo=20
+max_expo=20
 
 outfile=../data/$1.txt
 rm -f ${outfile}

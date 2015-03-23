@@ -64,7 +64,7 @@ int main (int argc, char *argv [])
 	size_t sz;
 	int msg_len;
 	scif_epd_t epd;
-	RMAReceiver *receiver = 0;
+	ReceiverInterface *receiver = 0;
 	int nbytes;
 	std::chrono::high_resolution_clock::time_point start, end;
 
@@ -84,7 +84,7 @@ int main (int argc, char *argv [])
 
 	/* Send */
 	receiver = new RMAReceiver (epd, sz);
-	receiver->exchange_offs ();
+	receiver->rendezvous (); //sync with sender
 	start = std::chrono::high_resolution_clock::now ();
 	nbytes = receiver->recv_payload ();
 	end =  std::chrono::high_resolution_clock::now ();

@@ -17,7 +17,9 @@
 #ifndef _SENDERINTERFACE_H_
 #define _SENDERINTERFACE_H_
 
-class SenderInterface
+#include "PeerInterface.h"
+
+class SenderInterface : public virtual PeerInterface
 {
 public:
 	virtual int send_payload () = 0;

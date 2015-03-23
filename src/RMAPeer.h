@@ -14,8 +14,8 @@
 
 */
 
-#ifndef _RMAPEERINTERFACE_H_
-#define _RMAPEERINTERFACE_H_
+#ifndef _RMAPEER_H_
+#define _RMAPEER_H_
 
 #include <scif.h>
 #include <iostream>

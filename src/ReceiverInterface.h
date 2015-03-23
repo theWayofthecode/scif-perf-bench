@@ -17,7 +17,9 @@
 #ifndef _RECEIVERINTERFACE_H_
 #define _RECEIVERINTERFACE_H_
 
-class ReceiverInterface
+#include "PeerInterface.h"
+
+class ReceiverInterface : public virtual PeerInterface
 {
 public:
 	virtual ~ReceiverInterface () {}
