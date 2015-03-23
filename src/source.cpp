@@ -71,9 +71,9 @@ int main (int argc, char *argv [])
     }
 	
 	portID.node = 0;
-    portID.port = PORT;
-    sz = atoi (argv [1]);
-    msg_len = atoi (argv [2]);
+	portID.port = PORT;
+	sz = atoi (argv [1]);
+	msg_len = atoi (argv [2]);
 
 	/* Connect */
 	if (initiate_connection (&epd, portID) != 0) {

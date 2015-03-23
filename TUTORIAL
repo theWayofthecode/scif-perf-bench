@@ -1,1 +1,32 @@
+#The root of the project
+cd scif-perf-bench
+
+#Used build the code
+mkdir build
+
+#Target for the binaries (source, sink)
+mkdir bin
+
+#Target for the data output
+mkdir data
+
+#To generate the Makefile
+cd build
 CXX=icc cmake -DCMAKE_INSTALL_PREFIX=../ ../
+
+#binaries are installed in the bin/ directory we created above
+make install
+
+#Execute. The size/len parameters are in Byte units
+#Note: If the RMA functions are used for the transfers the ${size} should be a multiple of 4096
+cd ../bin
+./sink ${size} ${block_len} &
+micnativeloadex ./source -a "${size} ${msg_len}"
+
+
+#In order to automate the above execution, you can use the scripts/run.sh.
+
+#======= If you need to change the transfer method ======
+#To test a different method of transfer you need to edit the source.cpp file to change the type 
+#of the sender. (the current one is of type WritetoSender). If you select an MSG type of sender
+#you have to edit the sink.cpp file as well

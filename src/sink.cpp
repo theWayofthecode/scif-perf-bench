@@ -61,21 +61,21 @@ int accept_connection (scif_epd_t *epd)
 
 int main (int argc, char *argv [])
 {
-    size_t sz;
-    int msg_len;
+	size_t sz;
+	int msg_len;
 	scif_epd_t epd;
 	RMAReceiver *receiver = 0;
 	int nbytes;
 	std::chrono::high_resolution_clock::time_point start, end;
 
 	/* Parameters */
-    if (argc != 3) {
-        std::cerr << "usage: source <data-size> <msg-len>" << std::endl;
-        return -1;
-    }
+	if (argc != 3) {
+		std::cerr << "usage: source <data-size> <msg-len>" << std::endl;
+		return -1;
+	}
 	
-    sz = atoi (argv [1]);
-    msg_len = atoi (argv [2]);
+	sz = atoi (argv [1]);
+	msg_len = atoi (argv [2]);
 
 	/* Accept */
 	if (accept_connection (&epd) != 0) {
