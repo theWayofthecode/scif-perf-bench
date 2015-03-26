@@ -41,8 +41,8 @@ int initiate_connection (scif_epd_t *epd, struct scif_portID portID)
 			return -1;
 	}
 
-	for (int i = 0; i < 3; ++i) {
-		usleep(100000);
+	for (int i = 0; i < 10; ++i) {
+		sleep(1);
 		if (scif_connect (*epd, &portID) < 0) {
 			std::cerr << "SOURCE: connection failed: "
 				 << std::strerror (errno) << std::endl;
@@ -70,7 +70,7 @@ int main (int argc, char *argv [])
         return -1;
     }
 	
-	portID.node = 0;
+	portID.node = 1;
 	portID.port = PORT;
 	sz = atoi (argv [1]);
 	msg_len = atoi (argv [2]);
