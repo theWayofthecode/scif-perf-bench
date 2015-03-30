@@ -17,17 +17,15 @@ msg_len=$((2**${expo}))
 killall micnativeloadex
 
 ########### HOST (receiver) ##############
-#${base}/sink ${size} ${msg_len} &>> ${outfile} &
+#${base}/sink.x86_64 ${size} ${msg_len} &>> ${outfile} &
 #
 ########### MIC (sender) #############
-#Micnativeloadex ${base}/source -a "${size} ${msg_len}"
+#micnativeloadex ${base}/source.k1om -a "${size} ${msg_len}"
 
 ########## MIC (receiver) ##############
 micnativeloadex ${base}/sink.k1om -a "${size} ${msg_len}" &>> ${outfile} &
-echo "micnativeloadex ${base}/sink.k1om -a \"${size} ${msg_len}\" &>> ${outfile} &"
 
 ########## HOST (sender) #############
-echo "${base}/source.x86_64 ${size} ${msg_len}"
 ${base}/source.x86_64 ${size} ${msg_len}
 
 expo=$((${expo} + 1))

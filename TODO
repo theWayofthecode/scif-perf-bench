@@ -1,3 +1,4 @@
 Add version numbering
 Consider to move connect/accept in the classes.
 source, sink switching logic
+Peer::data_ok(), declare in PeerInterface.h

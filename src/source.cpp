@@ -25,6 +25,7 @@
 #include "primitives/MSGSender.h"
 #include "primitives/VwritetoSender.h"
 #include "primitives/WritetoSender.h"
+#include "primitives/RMASender.h"
 
 /**
  *	It is assumed that the Sink is ready to accept.
@@ -81,18 +82,17 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	sender = new WritetoSender (epd, sz, msg_len);
+	sender = new RMASender (epd, sz);
 	sender->rendezvous (); //sync with receiver
 	nbytes = sender->send_payload ();
 	if (nbytes < (int)sz) {
 		std::cerr << "WARNING: send: " << nbytes << " < " << sz << std::endl;
 	}
 
-	/* Close */
+	/* De-allocate resources */
 	if (sender) {
 		delete sender;
 	}
-	
 	if (scif_close(epd) != 0) {
 		std::cerr << "SOURCE: scif_close error: " << std::strerror (errno) << std::endl;
 	}

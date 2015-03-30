@@ -13,14 +13,21 @@
 	Author: Aram Santogidis <aram.santogidis@cern.ch>
 
 */
+#ifndef _RMASENDER_H_
+#define _RMASENDER_H_
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
-
+#include <scif.h>
 #include <cstdint>
+#include "../SenderInterface.h"
+#include "../RMAPeer.h"
 
-#define PORT 8885
+class RMASender : public SenderInterface, public RMAPeer
+{
 
-const std::uint8_t content = 0xab;
+public:
+	RMASender (scif_epd_t epd, std::size_t buf_sz);
+	int send_payload ();	
+	~RMASender ();
+};
 
 #endif

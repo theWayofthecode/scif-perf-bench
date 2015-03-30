@@ -14,13 +14,23 @@
 
 */
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef _READFROMSENDER_H_
+#define _READFROMSENDER_H_
 
+#include <scif.h>
 #include <cstdint>
+#include "../ReceiverInterface.h"
+#include "../RMAPeer.h"
 
-#define PORT 8885
-
-const std::uint8_t content = 0xab;
+class ReadfromReceiver : public ReceiverInterface, public RMAPeer
+{
+	int block_sz;
+	
+public:
+	ReadfromReceiver (scif_epd_t epd, std::size_t buf_sz, int block_sz);
+	int recv_payload ();	
+	~ReadfromReceiver ();
+	bool data_ok () { return Peer::data_ok (); }
+};
 
 #endif

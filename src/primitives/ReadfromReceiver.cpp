@@ -18,26 +18,26 @@
 #include <algorithm>
 #include <cstring>
 #include <cerrno>
-#include "WritetoSender.h"
+#include "ReadfromReceiver.h"
 #include "../constants.h"
 
-WritetoSender::WritetoSender (scif_epd_t epd, std::size_t buf_sz, int block_sz) : 
+ReadfromReceiver::ReadfromReceiver (scif_epd_t epd, std::size_t buf_sz, int block_sz) : 
 	RMAPeer (epd, buf_sz), block_sz (block_sz)
 {
 	int err;
-	err = posix_memalign((void **)&buf, 0x1000, buf_sz);
+	err = posix_memalign((void **)&buf, 0x1000, buf_sz + 0x1000);
 	if (err < 0) {
 		std::cerr << "ERROR: posix_memalign: " << std::strerror (err) << std::endl;
 	}
-	loff = scif_register (epd, (void *)buf, buf_sz, 0, SCIF_PROT_READ, 0);
+	loff = scif_register (epd, (void *)buf, buf_sz + 0x1000, 0, SCIF_PROT_READ | SCIF_PROT_WRITE, 0);
 	if (loff < 0) {
 		std::cerr << "ERROR: scif_register: " << std::strerror (errno) << std::endl;
 	}
-    std::memset (buf, content, buf_sz);
+    std::memset (buf, 0, buf_sz + 0x1000);
 	exchange_offs ();
 }
 
-int WritetoSender::send_payload ()
+int ReadfromReceiver::recv_payload ()
 {
 	off_t loff_end = loff + buf_sz;
 	off_t loff_idx = loff;
@@ -46,9 +46,9 @@ int WritetoSender::send_payload ()
 	
 	while (loff_idx < loff_end) {
 		bytes = std::min (block_sz, (int)(loff_end - loff_idx));
-		err = scif_writeto (epd, loff_idx, bytes, roff_idx, 0);
+		err = scif_readfrom (epd, loff_idx, bytes, roff_idx, 0);
 		if (err < 0) {
-			std::cerr << "ERROR: scif_writeto: " << std::strerror (errno) << std::endl;
+			std::cerr << "ERROR: scif_readfrom: " << std::strerror (errno) << std::endl;
 			break;
 		}
 		loff_idx += bytes;
@@ -56,15 +56,19 @@ int WritetoSender::send_payload ()
 	}
 	
 	/*synchronize */
-	scif_fence_signal (epd, 0, 0, roff + buf_sz, 0xff, SCIF_FENCE_INIT_SELF | SCIF_SIGNAL_REMOTE);
+	scif_fence_signal (epd, loff + buf_sz, 0xff, roff + buf_sz, 0xff, SCIF_FENCE_INIT_SELF | SCIF_SIGNAL_REMOTE | SCIF_SIGNAL_LOCAL);
+	while (*(buf + buf_sz) != 0xff) {
+		usleep (50);
+	}
 
 	return loff_idx - loff;
 }
 
-WritetoSender::~WritetoSender ()
+ReadfromReceiver::~ReadfromReceiver ()
 {
-	if (scif_unregister (epd, loff, buf_sz) < 0) {
-		std::cerr << "ERROR: scif_unregister: " << std::strerror (errno) << std::endl;
+	if (scif_unregister (epd, loff, buf_sz + 0x1000) < 0) {
+		std::cerr << "ERROR: ReadfromReceiver: scif_unregister: " << std::strerror (errno) << std::endl;
 	}
+	rendezvous ();
 	std::free (buf);
 }

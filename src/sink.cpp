@@ -27,6 +27,7 @@
 #include "RMAPeer.h"
 #include "primitives/MSGReceiver.h"
 #include "primitives/RMAReceiver.h"
+#include "primitives/ReadfromReceiver.h"
 
 int accept_connection (scif_epd_t *epd)
 {
@@ -83,8 +84,9 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	receiver = new RMAReceiver (epd, sz);
+	receiver = new ReadfromReceiver (epd, sz, msg_len);
 	receiver->rendezvous (); //sync with sender
+
 	start = std::chrono::high_resolution_clock::now ();
 	nbytes = receiver->recv_payload ();
 	end =  std::chrono::high_resolution_clock::now ();
@@ -113,7 +115,6 @@ int main (int argc, char *argv [])
 	if (receiver) {
 		delete receiver;
 	}
-	
 	if (scif_close(epd) != 0) {
 		std::cerr << "SINK: scif_close error: " << std::strerror (errno) << std::endl;
 	}
