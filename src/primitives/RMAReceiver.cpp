@@ -44,6 +44,7 @@ int RMAReceiver::recv_payload ()
 	while (*(buf + buf_sz) != 0xff) {
 		usleep (50);
 	}
+	*(buf + buf_sz) = 0;
 	return buf_sz;
 }
 

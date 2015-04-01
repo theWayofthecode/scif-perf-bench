@@ -84,19 +84,21 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	receiver = new ReadfromReceiver (epd, sz, msg_len);
-	receiver->rendezvous (); //sync with sender
+	receiver = new RMAReceiver (epd, sz);
 
-	start = std::chrono::high_resolution_clock::now ();
-	nbytes = receiver->recv_payload ();
-	end =  std::chrono::high_resolution_clock::now ();
+	for (int i = 0; i < 2; ++i) {
+		receiver->rendezvous (); //sync with sender
+		start = std::chrono::high_resolution_clock::now ();
+		nbytes = receiver->recv_payload ();
+		end =  std::chrono::high_resolution_clock::now ();
+		if (nbytes < (int)sz) {
+			std::cerr << "WARNING: recv: " << nbytes << " < " << sz << std::endl;
+		}
+		if (!receiver->data_ok ()) {
+			std::cerr << "WARNING: Receiver: Payload data content is not correct." << std::endl;
+		}
+	}
 
-	if (nbytes < (int)sz) {
-		std::cerr << "WARNING: recv: " << nbytes << " < " << sz << std::endl;
-	}
-	if (!receiver->data_ok ()) {
-		std::cerr << "WARNING: Receiver: Payload data content is not correct." << std::endl;
-	}
 	
 	
 	std::chrono::duration<double> transfer_time = 

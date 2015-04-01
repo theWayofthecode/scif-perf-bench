@@ -71,7 +71,7 @@ int main (int argc, char *argv [])
         return -1;
     }
 	
-	portID.node = 1;
+	portID.node = 0;
 	portID.port = PORT;
 	sz = atoi (argv [1]);
 	msg_len = atoi (argv [2]);
@@ -82,11 +82,14 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	sender = new RMASender (epd, sz);
-	sender->rendezvous (); //sync with receiver
-	nbytes = sender->send_payload ();
-	if (nbytes < (int)sz) {
-		std::cerr << "WARNING: send: " << nbytes << " < " << sz << std::endl;
+	sender = new WritetoSender (epd, sz, msg_len);
+
+	for (int i = 0; i < 2; ++i) {
+		sender->rendezvous (); //sync with receiver
+		nbytes = sender->send_payload ();
+		if (nbytes < (int)sz) {
+			std::cerr << "WARNING: send: " << nbytes << " < " << sz << std::endl;
+		}
 	}
 
 	/* De-allocate resources */
