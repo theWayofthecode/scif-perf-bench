@@ -71,7 +71,7 @@ int main (int argc, char *argv [])
         return -1;
     }
 	
-	portID.node = 0;
+	portID.node = 1;
 	portID.port = PORT;
 	sz = atoi (argv [1]);
 	msg_len = atoi (argv [2]);
@@ -82,7 +82,7 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	sender = new WritetoSender (epd, sz, msg_len);
+	sender = new VwritetoSender (epd, sz, msg_len);
 
 	for (int i = 0; i < 2; ++i) {
 		sender->rendezvous (); //sync with receiver
