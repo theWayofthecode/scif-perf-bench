@@ -86,7 +86,7 @@ int main (int argc, char *argv [])
 	/* Send */
 	receiver = new RMAReceiver (epd, sz);
 
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 1; ++i) {
 		receiver->rendezvous (); //sync with sender
 		start = std::chrono::high_resolution_clock::now ();
 		nbytes = receiver->recv_payload ();
