@@ -4,7 +4,7 @@ msg_len=0
 msg_step=$((2**7))
 max_msg_len=$((2**12))
 expo=6
-max_expo=11
+max_expo=12
 size=$((2**27))
 
 outfile=../data/$1.txt

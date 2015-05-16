@@ -33,7 +33,7 @@ int MSGReceiver::recv_payload ()
 	int nbytes = 0;
 
 	while (buf_ptr < buf_end) {
-		nbytes = scif_recv (epd, buf_ptr, std::min (msg_len, (int)(buf_end - buf_ptr)) , SCIF_RECV_BLOCK);
+		nbytes = scif_recv (epd, buf_ptr, std::min (msg_len, (int)(buf_end - buf_ptr)) , 0);
 		if (nbytes < 0) {
 			std::cerr << "RECEIVER: scif_recv error: " << std::strerror (errno) << std::endl;
 			break;

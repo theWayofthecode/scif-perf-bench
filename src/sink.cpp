@@ -84,7 +84,7 @@ int main (int argc, char *argv [])
 	}
 
 	/* Send */
-	receiver = new RMAReceiver (epd, sz);
+	receiver = new MSGReceiver (epd, sz, msg_len);
 
 	for (int i = 0; i < 1; ++i) {
 		receiver->rendezvous (); //sync with sender

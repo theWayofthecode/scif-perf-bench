@@ -35,7 +35,7 @@ int MSGSender::send_payload ()
 	int nbytes = 0;
 
 	while (buf_ptr < buf_end) {
-		nbytes = scif_send (epd, buf_ptr, std::min (msg_len, (int)(buf_end - buf_ptr)) , SCIF_SEND_BLOCK);
+		nbytes = scif_send (epd, buf_ptr, std::min (msg_len, (int)(buf_end - buf_ptr)) , 0);
 		if (nbytes < 0) {
 			std::cerr << "scif_send failed with error: " << std::strerror (errno) << std::endl;
 			break;
